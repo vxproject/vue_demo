@@ -2,20 +2,13 @@
   <div>
     <el-row :gutter="20">
       <el-col :span="6">
-        <el-input v-model="name" @change="getName" placeholder="请输入姓名" maxlength="15" type="text"></el-input>
+        <el-input v-model="name" placeholder="请输入姓名" maxlength="15" type="text"></el-input>
       </el-col>
       <el-col :span="6">
-        <el-input
-          v-model="age"
-          @change="getAge"
-          placeholder="请输入年龄"
-          maxlength="3"
-          type="text"
-          value="number"
-        ></el-input>
+        <el-input v-model="age" placeholder="请输入年龄" maxlength="3" type="text" value="number"></el-input>
       </el-col>
       <el-col :span="6">
-        <el-input v-model="address" @change="getAddress" placeholder="请输入地址" maxlength="15"></el-input>
+        <el-input v-model="address" placeholder="请输入地址" maxlength="15"></el-input>
       </el-col>
       <el-col :span="6">
         <el-button type="success" @click="addContent">添加</el-button>
@@ -37,6 +30,15 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-dialog title="编辑信息" :visible.sync="dialogFlag" width="65%" center>
+      <el-input v-model="bjname" maxlength="15" type="text" placeholder="请输入姓名"/>
+      <el-input v-model="bjage" maxlength="3" type="text" value="number" placeholder="请输入年龄"/>
+      <el-input v-model="bjaddress" maxlength="15" type="text" placeholder="请输入地址"/>
+      <div slot="footer" class>
+        <el-button @click="cancel">取 消</el-button>
+        <el-button type="primary" @click="makesure">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -60,25 +62,15 @@ export default {
         { image: "不会弄", name: "马日地", age: "16", address: "洱海" },
         { image: "不会弄", name: "马日鬼", age: "19", address: "玄海" },
         { image: "不会弄", name: "马日蛇", age: "31", address: "沧海" }
-      ]
+      ],
+
+      bjname: "",
+      bjage: "",
+      bjaddress: "",
+      dialogFlag: false
     };
   },
   methods: {
-    // 获取名字
-    getName(e) {
-      console.info(e);
-      this.name = e;
-    },
-    //获取年龄
-    getAge(e) {
-      console.info(e);
-      this.age = e;
-    },
-    //获取地址
-    getAddress(e) {
-      console.info(e);
-      this.address = e;
-    },
     addContent() {
       if (!this.name && !this.age && !this.address) {
         alert("完善内容在提交");
@@ -95,11 +87,34 @@ export default {
       this.age = "";
       this.address = "";
     },
+
+    // 编辑
     handleEdit(index, row) {
       console.log(index, row);
+      this.index = index;
+      this.dialogFlag = true;
+      this.bjname = this.list_data[index].name;
+      this.bjage = this.list_data[index].age;
+      this.bjaddress = this.list_data[index].address;
     },
+    // 删除
     handleDelete(index, row) {
       this.list_data.splice(index, 1);
+    },
+    // 取消
+    cancel() {
+      this.dialogFlag = false;
+    },
+    //确定
+    makesure() {
+      this.dialogFlag = false;
+      if (!this.bjname && !this.bjage && !this.bjaddress) {
+        alert("完善内容在提交");
+        return;
+      }
+      this.$set(this.list_data[this.index], "name", this.bjname);
+      this.$set(this.list_data[this.index], "age", this.bjage);
+      this.$set(this.list_data[this.index], "address", this.bjaddress);
     }
   }
 };
