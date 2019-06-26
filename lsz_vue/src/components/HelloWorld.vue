@@ -31,8 +31,8 @@
       </el-table-column>
     </el-table>
     <el-dialog title="编辑信息" :visible.sync="dialogFlag" width="65%" center>
-      <el-input v-model="bjname" maxlength="15" type="text" placeholder="请输入姓名"/>
-      <el-input v-model="bjage" maxlength="3" type="text" value="number" placeholder="请输入年龄"/>
+      <el-input v-model="bjname" maxlength="15" type="text" placeholder="请输入姓名" class="dialog"/>
+      <el-input v-model="bjage" maxlength="3" type="text" value="number" placeholder="请输入年龄" class="dialog"/>
       <el-input v-model="bjaddress" maxlength="15" type="text" placeholder="请输入地址"/>
       <div slot="footer" class>
         <el-button @click="cancel">取 消</el-button>
@@ -125,5 +125,8 @@ export default {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-around;
+}
+.dialog{
+  margin-bottom: 50px;
 }
 </style>
